@@ -13,15 +13,14 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task
+..- task
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
     projects: '**/*.csproj
-    displayName:'Restore'Nuget package'
+  displayName:'Restore'Nuget package'
 
-_
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
