@@ -3,8 +3,11 @@
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
+name: DontNet-core-customerApi-CI
 trigger:
-- master
+.branch:
+   include:
+    - customerApi/*
 
 pool:
   vmImage: ubuntu-latest
@@ -13,30 +16,29 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-..- task
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    projects: '**/*.csproj'
-  displayName:'Restore'Nuget package'
-
+    projects: '**/customerApi*.csproj'
+  displayName: 'Restore Nuge package'
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    projects: '**/*csproj'
-    arguments: '--no-restore'
-  dispalyName:'Build project'
-  condition: 
+    projects: '**/customerApi*.csproj'
+    arguments: --no-restore'
+    dispalyName: 'Build project'
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
-    projects: '**/*Test.csproj'
+    projects: '**/.Test.csproj'
+    arguments: 'no-resore.--no-build'
   displayName: 'Run Test'
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'publish'
-      publishWebProjects: false
-      project: '**/customerApi.csproj'
-      arguments: '--configuration $(buidconfiguration) --no-restore'
-      modifyoutpath: false
-      dispalyName:'publish customer API'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '**/'customerApi*.csproj'
+    arguments: '--configuration $(buildconfiguration) --no-restore'
+    ModifyoutputPath: false 
+  displayName: 'Publish CustomerApi'
